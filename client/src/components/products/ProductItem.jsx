@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import { FaDollarSign } from "react-icons/fa";
 import Rating from "./Rating";
 
@@ -26,8 +27,12 @@ const Product = ({ product }) => {
           <FaDollarSign />
           <span className="ms-2">{product.price}</span>
         </Card.Text>
+        <Link to={`/product/${product._id}`}>
+          <Button variant="primary">Buy Now</Button>
+        </Link>
       </Card.Body>
     </Card>
   );
 };
+
 export default Product;
