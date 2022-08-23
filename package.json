@@ -1,0 +1,25 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "MERN Stack E-Commerce Web Application",
+  "main": "server.js",
+  "repository": "https://github.com/indranildeveloper/proshop.git",
+  "author": "Indranil Halder <indranilhalder.dev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r esm server/server",
+    "server": "nodemon -r esm server/server",
+    "client": "yarn --cwd client start",
+    "client-install": "yarn --cwd client install",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "esm": "^3.2.25",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19"
+  }
+}

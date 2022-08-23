@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -7,11 +9,18 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Rating from "../products/Rating";
-import products from "../../data/products";
+// import products from "../../data/products";
 
 const Product = (props) => {
+  const [product, setProduct] = useState({});
   const { productId } = useParams();
-  const product = products.find((product) => product._id === productId);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await axios.get(`/api/products/${productId}`);
+      setProduct(data);
+    };
+    fetchProducts();
+  }, [productId]);
 
   return (
     <>
