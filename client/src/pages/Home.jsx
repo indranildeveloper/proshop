@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ProductItem from "../products/ProductItem";
-import AlertMessage from "../alert/AlertMessage";
-import Loader from "../layout/Loader";
-import { listProducts } from "../../actions/productActions";
+import ProductItem from "../components/products/ProductItem";
+import AlertMessage from "../components/alert/AlertMessage";
+import Loader from "../components/layout/Loader";
+import { listProducts } from "../actions/productActions";
 
 const Home = () => {
   const dispatch = useDispatch();

@@ -2,8 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import Home from "./components/pages/Home";
-import Product from "./components/pages/Product";
+import Home from "./pages/Home";
+import Product from "./pages/Product";
+import Cart from "./pages/Cart";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -18,6 +19,10 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/product/:productId" element={<Product />} />
+              <Route path="/cart">
+                <Route index element={<Cart />} />
+                <Route path=":productId" element={<Cart />} />
+              </Route>
             </Routes>
           </Container>
         </main>
