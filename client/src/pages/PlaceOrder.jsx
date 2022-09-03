@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -8,9 +9,11 @@ import Image from "react-bootstrap/Image";
 import Card from "react-bootstrap/Card";
 import AlertMessage from "../components/alert/AlertMessage";
 import CheckoutSteps from "../components/layout/CheckoutSteps";
+import { createOrder } from "../actions/orderActions";
 
 const PlaceOrder = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
 
   // Calculate Prices
@@ -28,7 +31,29 @@ const PlaceOrder = () => {
     Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
   );
 
-  const handlePlaceOrder = () => {};
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`);
+    }
+    // eslint-disable-next-line
+  }, [navigate, success]);
+
+  const handlePlaceOrder = () => {
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
 
   return (
     <>
@@ -117,6 +142,9 @@ const PlaceOrder = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
+                {error && <AlertMessage variant="danger">{error}</AlertMessage>}
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <div className="d-grid">
                   <Button
                     type="button"
@@ -134,4 +162,5 @@ const PlaceOrder = () => {
     </>
   );
 };
+
 export default PlaceOrder;
