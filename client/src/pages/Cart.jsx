@@ -31,8 +31,9 @@ const Cart = () => {
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
   };
+
   const handleCheckout = () => {
-    navigate("/login?redirect=shipping");
+    navigate("/login?redirect=/shipping");
   };
 
   return (
