@@ -12,6 +12,7 @@ import Shipping from "./pages/Shipping";
 import Payment from "./pages/Payment";
 import PlaceOrder from "./pages/PlaceOrder";
 import Order from "./pages/Order";
+import UserList from "./pages/UserList";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/payment" element={<Payment />} />
               <Route path="/placeorder" element={<PlaceOrder />} />
               <Route path="/order/:orderId" element={<Order />} />
+              <Route path="/admin/userlist" element={<UserList />} />
             </Routes>
           </Container>
         </main>
