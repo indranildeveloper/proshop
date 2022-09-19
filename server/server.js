@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import dotenv from "dotenv";
 import colors from "colors";
 import { notFound, errorHandler } from "./middleware/errorMiddleware";
@@ -6,6 +7,7 @@ import connectDB from "./config/db";
 import productRoutes from "./routes/productRoutes";
 import userRoutes from "./routes/userRoutes";
 import orderRoutes from "./routes/orderRoutes";
+import uploadRoutes from "./routes/uploadRoutes";
 
 dotenv.config();
 
@@ -18,9 +20,13 @@ app.get("/", (req, res) => {
   res.send("API is running!");
 });
 
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Paypal Payment
 // app.get("/api/config/paypal", (req, res) =>
