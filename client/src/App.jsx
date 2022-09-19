@@ -14,6 +14,8 @@ import PlaceOrder from "./pages/PlaceOrder";
 import Order from "./pages/Order";
 import UserList from "./pages/UserList";
 import EditUser from "./pages/EditUser";
+import ProductList from "./pages/ProductList";
+import EditProduct from "./pages/EditProduct";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -41,6 +43,11 @@ const App = () => {
               <Route path="/order/:orderId" element={<Order />} />
               <Route path="/admin/userlist" element={<UserList />} />
               <Route path="/admin/user/:userId/edit" element={<EditUser />} />
+              <Route path="/admin/productList" element={<ProductList />} />
+              <Route
+                path="/admin/product/:productId/edit"
+                element={<EditProduct />}
+              />
             </Routes>
           </Container>
         </main>
