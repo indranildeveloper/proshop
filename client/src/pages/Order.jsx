@@ -11,8 +11,15 @@ import Image from "react-bootstrap/Image";
 import Card from "react-bootstrap/Card";
 import AlertMessage from "../components/alert/AlertMessage";
 import Loader from "../components/layout/Loader";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
-import { ORDER_PAY_RESET } from "../constants/orderConstants";
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from "../actions/orderActions";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from "../constants/orderConstants";
 
 const Order = () => {
   const dispatch = useDispatch();
@@ -23,6 +30,8 @@ const Order = () => {
   const { order, loading, error } = orderDetails;
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -44,13 +53,24 @@ const Order = () => {
     if (!userInfo) {
       navigate("/login");
     }
-    if (!order || successPay || order._id !== orderId) {
+    if (!order || successPay || order._id !== orderId || successDeliver) {
       dispatch({
         type: ORDER_PAY_RESET,
       });
+      dispatch({
+        type: ORDER_DELIVER_RESET,
+      });
       dispatch(getOrderDetails(orderId));
     }
-  }, [dispatch, navigate, order, orderId, successPay, userInfo]);
+  }, [
+    dispatch,
+    navigate,
+    order,
+    orderId,
+    successPay,
+    successDeliver,
+    userInfo,
+  ]);
 
   // Stripe Payment
   const handleToken = async (token) => {
@@ -58,11 +78,15 @@ const Order = () => {
     const { status } = response.data;
 
     if (status === "success") {
-      dispatch(payOrder(orderId));
+      dispatch(payOrder(order));
     } else {
       console.log("Something went wrong!");
       console.log({ error: response.data });
     }
+  };
+
+  const handleDeliver = () => {
+    dispatch(deliverOrder(order));
   };
 
   return loading ? (
@@ -196,6 +220,19 @@ const Order = () => {
                   )}
                 </ListGroup.Item>
               )}
+              {loadingDeliver && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <div className="d-grid">
+                      <Button type="button" onClick={handleDeliver}>
+                        Mark as Delivered
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>

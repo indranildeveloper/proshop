@@ -89,6 +89,28 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   if (order) {
     order.isPaid = true;
     order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.order._id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.order.user.email,
+    };
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found!");
+  }
+});
+
+// @desc    Update order to delivered
+// @route   GET /api/orders/:orderId/deliver
+// @access  Private/Admin
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.orderId);
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
     const updatedOrder = await order.save();
     res.json(updatedOrder);
   } else {
@@ -101,34 +123,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/payment
 // @access  Private
 const processPayment = async (req, res) => {
-  // console.log("Payment");
-  // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  // const { order, token } = req.body;
-  // let status;
-  // if (order) {
-  //   const customer = await stripe.customers.create({
-  //     email: token.email,
-  //     source: token.id,
-  //   });
-  //   const idempotencyKey = uuidv4();
-
-  //   const charge = await stripe.charges.create(
-  //     {
-  //       amount: req.body.order.totalPrice * 100,
-  //       currency: "usd",
-  //       customer: customer.id,
-  //       receipt_email: token.email,
-  //     },
-  //     { idempotencyKey }
-  //   );
-
-  //   status = "success";
-  //   res.status(200).json({ status });
-  // } else {
-  //   status = "failure";
-  //   res.status(404).json({ status });
-  //   throw new Error("Order not found!");
-  // }
   let error;
   let status;
   try {
@@ -163,9 +157,16 @@ const processPayment = async (req, res) => {
 // @desc    Get Logged in user orders
 // @route   GET /api/orders/myorders
 // @access  Private
-
 const getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id });
+  res.json(orders);
+});
+
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Private/Admin
+const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find().populate("user", "id name");
   res.json(orders);
 });
 
@@ -175,4 +176,6 @@ export {
   updateOrderToPaid,
   processPayment,
   getMyOrders,
+  getOrders,
+  updateOrderToDelivered,
 };
