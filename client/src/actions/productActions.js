@@ -20,31 +20,34 @@ import {
   PRODUCT_CREATE_REVIEW_FAIL,
 } from "../constants/productConstants";
 
-export const listProducts =
-  (keyword = "") =>
-  async (dispatch) => {
-    try {
-      dispatch({
-        type: PRODUCT_LIST_REQUEST,
-      });
-      const { data } = await axios.get(
-        `/api/products?keyword=${keyword.keyword ? keyword.keyword : ""}`
-      );
+export const listProducts = (keyword, pageNumber) => async (dispatch) => {
+  let searchKeyword = keyword === undefined ? "" : keyword.keyword;
+  let pageNum = pageNumber === undefined ? 1 : pageNumber.pageNumber;
 
-      dispatch({
-        type: PRODUCT_LIST_SUCCESS,
-        payload: data,
-      });
-    } catch (err) {
-      dispatch({
-        type: PRODUCT_LIST_FAIL,
-        payload:
-          err.response && err.response.data.message
-            ? err.response.data.message
-            : err.message,
-      });
-    }
-  };
+  try {
+    dispatch({
+      type: PRODUCT_LIST_REQUEST,
+    });
+    const { data } = await axios.get(
+      `/api/products?keyword=${searchKeyword ? searchKeyword : ""}&pageNumber=${
+        pageNum ? pageNum : 1
+      }`
+    );
+
+    dispatch({
+      type: PRODUCT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PRODUCT_LIST_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
 
 export const listProductDetails = (productId) => async (dispatch) => {
   try {
