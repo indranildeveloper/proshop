@@ -17,7 +17,7 @@ const SearchBox = () => {
   };
 
   return (
-    <Form onSubmit={(e) => handleSubmit(e)} className="my-md-2">
+    <Form onSubmit={(e) => handleSubmit(e)} className="my-md-2 mx-auto w-full">
       <div className="d-flex gap-2">
         <Form.Control
           type="text"

@@ -1,17 +1,21 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ProductItem from "../components/products/ProductItem";
 import AlertMessage from "../components/alert/AlertMessage";
 import Loader from "../components/layout/Loader";
 import Paginate from "../components/layout/Paginate";
+import ProductCarousel from "../components/products/ProductCarousel";
+import Meta from "../components/layout/Meta";
 import { listProducts } from "../actions/productActions";
 
 const Home = () => {
   const keyword = useParams("keyword");
   const pageNumber = useParams("pageNumber") || 1;
+
+  console.log(keyword);
 
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
@@ -23,7 +27,16 @@ const Home = () => {
 
   return (
     <>
+      <Meta />
+      {keyword.keyword === undefined ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-primary mb-4">
+          Go Back
+        </Link>
+      )}
       <h1>Latest Products</h1>
+
       {loading ? (
         <Loader />
       ) : error ? (

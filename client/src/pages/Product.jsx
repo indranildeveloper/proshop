@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Rating from "../components/products/Rating";
 import Loader from "../components/layout/Loader";
 import AlertMessage from "../components/alert/AlertMessage";
+import Meta from "../components/layout/Meta";
 import {
   listProductDetails,
   createProductReview,
@@ -68,6 +69,7 @@ const Product = () => {
         <AlertMessage variant="danger">{error}</AlertMessage>
       ) : (
         <>
+          <Meta title={product.name} />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
