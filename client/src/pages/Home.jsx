@@ -15,8 +15,6 @@ const Home = () => {
   const keyword = useParams("keyword");
   const pageNumber = useParams("pageNumber") || 1;
 
-  console.log(keyword);
-
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, pages, page } = productList;

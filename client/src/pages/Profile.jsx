@@ -12,6 +12,7 @@ import AlertMessage from "../components/alert/AlertMessage";
 import Loader from "../components/layout/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -38,7 +39,10 @@ const Profile = () => {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({
+          type: USER_UPDATE_PROFILE_RESET,
+        });
         dispatch(getUserDetails("profile"));
         dispatch(listMyOrders());
       } else {
@@ -46,7 +50,7 @@ const Profile = () => {
         setEmail(user.email);
       }
     }
-  }, [dispatch, navigate, userInfo, user]);
+  }, [dispatch, navigate, userInfo, user, success]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
