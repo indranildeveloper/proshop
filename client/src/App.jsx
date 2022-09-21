@@ -30,6 +30,7 @@ const App = () => {
           <Container>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/search/:keyword" element={<Home />} />
               <Route path="/product/:productId" element={<Product />} />
               <Route path="/cart">
                 <Route index element={<Cart />} />
